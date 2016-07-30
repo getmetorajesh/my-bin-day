@@ -11,6 +11,9 @@ var MapView = React.createClass({
           attributionControl: false, 
       });
       map.on('click', this.onMapClick);
+       if (map.scrollWheelZoom.enabled()) {
+        map.scrollWheelZoom.disable();
+      }
       map.setView([-37,144],5);
 
       $.get( "boundaries", {}, function( data ) {
@@ -31,12 +34,16 @@ var MapView = React.createClass({
     },
     onMapClick: function(e) {
         // Do some wonderful map things...
+       // console.log(e.latlng);
         var latitude = e.latlng.lat;
         var longitude = e.latlng.lng;
         this.updateMarker(longitude, latitude);
         this.props.onSubmitGetInfo(longitude, latitude, "","");
     },
     updateMarker:function(longitude, latitude){
+      console.log("update mark");
+      console.log(longitude, latitude);
+       console.log("update mark");
       if (this.map.hasLayer(this.marker)) {
         this.map.removeLayer(this.marker);
       }

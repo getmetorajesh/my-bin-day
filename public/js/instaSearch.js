@@ -5,30 +5,37 @@ var InstaSearch = React.createClass({
   getScheduleInfo: function(longitude, latitude, address, gaddress){
     console.log(address);
     console.log(gaddress);
+      var lat = latitude;
+      var lng = longitude;
+
+    if(gaddress != undefined && gaddress != "") {
+      lat = gaddress.geometry.location.lat();
+      lng = gaddress.geometry.location.lng();
+    }
     $.ajax({
       method: "POST",
       url: "collectionSchedule",
       cache: false,
-      data: { longitude:longitude,
-          latitude: latitude,
+      data: { longitude: lng,
+          latitude: lat,
           actualAddress: address,
           gaddress:  JSON.stringify(gaddress) }
     })
     .done(function(scheduleInfo){
-      console.log(gaddress);
       this.setState({"scheduleInfo": scheduleInfo,
                       "geolocation":{
-                        "latitude": latitude,
-                        "longitude": longitude }
+                        "latitude": lat,
+                        "longitude": lng }
                       });
 
-      this.refs.mapEl.updateMarker(longitude, latitude);
+      this.refs.mapEl.updateMarker(lng, lat);
     }.bind(this));
   },
   componentDidMount: function() {
 
   },
   render: function() {
+console.log("rerender");
     return (
      <div className=''>
         <div className="">
@@ -39,7 +46,7 @@ var InstaSearch = React.createClass({
         </div>
           <div id="scheduleView" className="col-xs-12">
               <ScheduleView data={this.state.scheduleInfo}/>
-            </div>
+          </div>
       </div>
     );
   }

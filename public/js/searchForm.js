@@ -32,8 +32,8 @@ var SearchForm = React.createClass({
     if(!address){
       return;
     }
-    var latitude  = gaddress.geometry.location.G;
-    var longitude = gaddress.geometry.location.K;
+    var latitude  = gaddress.geometry.location.lat;
+    var longitude = gaddress.geometry.location.lng;
     this.props.onSubmitGetInfo(longitude, latitude, address, gaddress);
     //this.getBinInfo(address, gaddress);
     //React.findDOMNode(this.refs.address).value ='';

@@ -42,14 +42,20 @@ router.post('/', function(req, res, next) {
 
     var bodyParams = req.body;
 
-    //TODO: to save in db log
     //bodyParams.address
     console.log(bodyParams);
     if (bodyParams.latitude !== '' && bodyParams.longitude !== '') {
       var gaddress = JSON.parse(bodyParams.gaddress);
       var latitude = parseFloat(bodyParams.latitude); //address.geometry.location.G; // bodyParams.latitude;
       var longitude = parseFloat(bodyParams.longitude);// gaddress.geometry.location.K;//
-      console.log(latitude);
+      // if the body params has gaddress then assuming its from address and so parse and use them
+      // if(gaddress !== ""){
+      //     latitude = gaddress.geometry.location.lat;
+      //     longitude = gaddress.geometry.location.lng;
+      // }
+      
+      console.log("******");
+      console.log(gaddress);
       var boundaryQuery = findLGABoundaryFor(latitude, longitude);
       boundaryQuery.exec(function(err, boundary){
         console.log(boundary);
@@ -64,9 +70,14 @@ router.post('/', function(req, res, next) {
           WasteCollectionSchedule.findOne({ lgaboundariesRef: boundaryId}, function(error, schedule){
             console.log(schedule);
             var nextSchedule = {};
-            nextSchedule.green = new ISODateDuration(schedule.green_sch).getNextDate();
-            nextSchedule.landfill = new ISODateDuration(schedule.landfill_sch).getNextDate();
-            nextSchedule.recycle = new ISODateDuration(schedule.recycle_sch).getNextDate();
+            try{ 
+                nextSchedule.green = new ISODateDuration(schedule.green_sch).getNextDate();
+                nextSchedule.landfill = new ISODateDuration(schedule.landfill_sch).getNextDate();
+                nextSchedule.recycle = new ISODateDuration(schedule.recycle_sch).getNextDate();
+            } catch (err) {
+              console.log("ERROR: "+err);
+                //throw new Error(err);
+            }
             console.log(nextSchedule);
             res.send(nextSchedule);
           });

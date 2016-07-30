@@ -1,0 +1,27 @@
+{
+  "name": "Base Html Project",
+  "version": "0.0.1",
+  "authors": [
+    "raj <rajesh.krishnan@wyndham.vic.gov.au>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "browser-sync": "https://github.com/shakyShane/browser-sync.git#~1.5.1",
+    "browser-sync-client": "https://github.com/shakyShane/browser-sync-client.git#~0.3.2",
+    "livereload-js": "https://github.com/livereload/livereload-js.git#~2.0.8",
+    "react": "~0.13.3",
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.5",
+    "datatables": "~1.10.8",
+    "leaflet": "~0.7.3",
+    "moment": "~2.10.6"
+  }
+}

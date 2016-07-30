@@ -1,0 +1,51 @@
+doctype html
+html
+  head
+    title= title
+    //  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta http-equiv="Content-Type" content="application/json; charset=utf-8">
+      <meta content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes" name="viewport">
+      <meta name="viewport" content="target-densitydpi=device-dpi, width = 320, user-scalable = 0">
+    link(rel='stylesheet', href='/../components/bootstrap/dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/../css/style.css')
+    script(src='/ie.js')
+    link(rel='stylesheet', href="/../components/bootstrap/dist/css/bootstrap-theme.min.css")
+    
+    script(src="/../components/react/react.js")
+
+    script(src="/../js/JSXTransformer.js")
+    script(src="/../components/jquery/dist/jquery.min.js")
+    script(src="/../components/bootstrap/dist/js/bootstrap.min.js")
+
+    //datatables
+    link(rel='stylesheet', href="/../components/datatables/media/css/dataTables.bootstrap.min.css")
+    script(src="/../components/datatables/media/js/jquery.dataTables.min.js")
+    script(src="/../components/datatables/media/js/dataTables.bootstrap.min.js")
+
+    script(src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&dummy=.js")
+    link(rel='stylesheet', href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css")
+    script(src="/../components/leaflet/dist/leaflet.js")
+    
+    script(src="/../components/moment/min/moment-with-locales.min.js")
+    script.
+      function setDateFormat(value){
+        if( typeof value === 'undefined' || value === ''){
+          return "";
+        }else {
+          return moment(value).format('LL');
+        }
+      }
+      //$(document).ready(function(){
+        $.ajaxSetup({
+            headers: {
+                'X-Access-Token': window.localStorage.getItem('token'),
+                'X-Key': window.localStorage.getItem('user')
+            }
+        });
+    //  });
+      
+    body
+    nav.navbar.navbar-inverse
+      div.container
+        h1 Waste Collection
+    block content

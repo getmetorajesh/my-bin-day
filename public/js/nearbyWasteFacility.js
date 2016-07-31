@@ -6,7 +6,6 @@ var NearbyWasteFacility = React.createClass({
     var reprocessing, address, owner = "";
 
     if(nearestFacility != undefined && nearestFacility.properties != undefined) {
-      console.log(nearestFacility.properties);
       name = nearestFacility.properties.Name;
       landfill = nearestFacility.properties.LANDFILL;
       reprocessing = nearestFacility.properties.REPROCESSING;

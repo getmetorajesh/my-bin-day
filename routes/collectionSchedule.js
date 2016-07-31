@@ -19,7 +19,7 @@ var moment = require('moment');
 /* lets start importing */
 
 var isoDate = new ISODateDuration("R/2015-01-15/P1W");
-console.log(isoDate.getNextDate());
+//console.log(isoDate.getNextDate());
 
 
 //var intervals = isoDate.getNextDate(5);
@@ -62,7 +62,7 @@ router.post('/', function (req, res, next) {
   var bodyParams = req.body;
 
   //bodyParams.address
-  console.log(bodyParams);
+  //console.log(bodyParams);
   if (bodyParams.latitude !== '' && bodyParams.longitude !== '') {
     var gaddress = JSON.parse(bodyParams.gaddress);
     var latitude = parseFloat(bodyParams.latitude); //address.geometry.location.G; // bodyParams.latitude;
@@ -100,7 +100,7 @@ router.post('/', function (req, res, next) {
               console.log("ERROR: " + err);
               //throw new Error(err);
             }
-            console.log(nextSchedule);
+         //   console.log(nextSchedule);
             res.send(nextSchedule);
           });
         }

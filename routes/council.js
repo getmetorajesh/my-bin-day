@@ -10,7 +10,7 @@ var async = require('async');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   function getBoundary(council) {
-    console.log(council);
+  //  console.log(council);
     var boundaryPromise = LGABoundary.find({council: council._id, isArchived:false});
     return boundaryPromise;
   }

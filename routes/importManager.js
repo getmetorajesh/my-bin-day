@@ -18,7 +18,7 @@ router.get('/:uniqueName', function (req, res, next) {
   var wasteCollectionFormat = 'https://spreadsheets.google.com/feeds/list/1lGuZDgNSybGuA39FNRoaTzJGiPI69FY8MBYlUdriDpg/od6/public/values?alt=json'
   //'https://spreadsheets.google.com/feeds/list/1lGuZDgNSybGuA39FNRoaTzJGiPI69FY8MBYlUdriDpg/od6/public/values?alt=json';
   var uniqueName = req.params.uniqueName;
-  console.log(new RegExp(uniqueName, 'i'));
+  //console.log(new RegExp(uniqueName, 'i'));
   async.waterfall([
 
     //1. get the council info
@@ -138,7 +138,7 @@ router.get('/:uniqueName', function (req, res, next) {
             .project('EPSG:4326');
           reProjectedData.exec(function (err, data) {
             if (err) {
-              console.log(err);
+            //  console.log(err);
               throw err;
             } else {
               //console.log(data);

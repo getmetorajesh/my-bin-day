@@ -41,9 +41,7 @@ var MapView = React.createClass({
         this.props.onSubmitGetInfo(longitude, latitude, "","");
     },
     updateMarker:function(longitude, latitude){
-      console.log("update mark");
-      console.log(longitude, latitude);
-       console.log("update mark");
+  
       if (this.map.hasLayer(this.marker)) {
         this.map.removeLayer(this.marker);
       }

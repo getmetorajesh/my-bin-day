@@ -4,7 +4,7 @@ var ScheduleView = React.createClass({
     var recycleWasteDay = this.props.data.recycle;
     var landfillWasteDay = this.props.data.landfill;
     return (
-      <div className='col-xs-4'>
+      <div className='col-xs-12'>
         <h3> Next collection schedule</h3>
         <table className='table'>
           <tr>

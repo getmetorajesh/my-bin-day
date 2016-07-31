@@ -8,6 +8,8 @@ var mongoose = require('mongoose');
 var async = require('async');
 var LGABoundary = require(__dirname + '/../models/lgaBoundaryModel');
 var WasteCollectionSchedule = require(__dirname + '/../models/wasteCollectionScheduleModel');
+var WasteFacility = require(__dirname + '/../models/wasteFacilityModel');
+
 var ISODateDuration = require(__dirname + '/../lib/ISODateDuration');
 var moment = require('moment');
 ///var iiso8601 = require('node-iso8601');
@@ -25,65 +27,87 @@ console.log(isoDate.getNextDate());
 //   //  console.log('Interval on ' + interval.format('YYYY-MM-DD HH:mm:ss'));
 // });
 
-router.post('/', function(req, res, next) {
-    function findLGABoundaryFor(latitude, longitude){
-      var query = LGABoundary.findOne({
-        geometry:{
-          $geoIntersects:{
-            $geometry:{
-              type:"Point",
-              coordinates: [longitude, latitude]
-              }
-            }
+router.post('/', function (req, res, next) {
+  function findLGABoundaryFor(latitude, longitude) {
+    var query = LGABoundary.findOne({
+      geometry: {
+        $geoIntersects: {
+          $geometry: {
+            type: "Point",
+            coordinates: [longitude, latitude]
           }
-      });
-      return query;
-    }
+        }
+      }
+    });
+    return query;
+  }
 
-    var bodyParams = req.body;
+  function findNearestFacility(latitude, longitude) {
+    var query = WasteFacility.findOne({
+      "geometry.coordinates": {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [longitude, latitude]
+          },
+          $maxDistance: 50000,
+          $minDistance: 10
+        }
+      }
+    });
+    //console.log(query);
+    return query;
+  }
 
-    //bodyParams.address
-    console.log(bodyParams);
-    if (bodyParams.latitude !== '' && bodyParams.longitude !== '') {
-      var gaddress = JSON.parse(bodyParams.gaddress);
-      var latitude = parseFloat(bodyParams.latitude); //address.geometry.location.G; // bodyParams.latitude;
-      var longitude = parseFloat(bodyParams.longitude);// gaddress.geometry.location.K;//
-      // if the body params has gaddress then assuming its from address and so parse and use them
-      // if(gaddress !== ""){
-      //     latitude = gaddress.geometry.location.lat;
-      //     longitude = gaddress.geometry.location.lng;
-      // }
-      
-      console.log("******");
-      console.log(gaddress);
-      var boundaryQuery = findLGABoundaryFor(latitude, longitude);
-      boundaryQuery.exec(function(err, boundary){
-        console.log(boundary);
+  var bodyParams = req.body;
+
+  //bodyParams.address
+  console.log(bodyParams);
+  if (bodyParams.latitude !== '' && bodyParams.longitude !== '') {
+    var gaddress = JSON.parse(bodyParams.gaddress);
+    var latitude = parseFloat(bodyParams.latitude); //address.geometry.location.G; // bodyParams.latitude;
+    var longitude = parseFloat(bodyParams.longitude);// gaddress.geometry.location.K;//
+    // if the body params has gaddress then assuming its from address and so parse and use them
+    // if(gaddress !== ""){
+    //     latitude = gaddress.geometry.location.lat;
+    //     longitude = gaddress.geometry.location.lng;
+    // }
+
+    var boundaryQuery = findLGABoundaryFor(latitude, longitude);
+    var nearestFacility = findNearestFacility(latitude, longitude);
+
+    nearestFacility.exec(function (err, nearestCollectionFacility) {
+
+      boundaryQuery.exec(function (err, boundary) {
         if (boundary == null) { // == null will check for both null and undefined
           res.send({
-                  green_sch: "Unknown",
-                  landfill_sch: "Unknown",
-                  recycle_sch: "Unknown",
-                });
-        }else{
+            green: "Unknown",
+            landfill: "Unknown",
+            recycle: "Unknown",
+            nearestFacility: nearestCollectionFacility
+          });
+        } else {
           var boundaryId = mongoose.Types.ObjectId(boundary._id);
-          WasteCollectionSchedule.findOne({ lgaboundariesRef: boundaryId}, function(error, schedule){
-            console.log(schedule);
+          WasteCollectionSchedule.findOne({ lgaboundariesRef: boundaryId }, function (error, schedule) {
+
             var nextSchedule = {};
-            try{ 
-                nextSchedule.green = new ISODateDuration(schedule.green_sch).getNextDate();
-                nextSchedule.landfill = new ISODateDuration(schedule.landfill_sch).getNextDate();
-                nextSchedule.recycle = new ISODateDuration(schedule.recycle_sch).getNextDate();
+            try {
+              nextSchedule.green = new ISODateDuration(schedule.green_sch).getNextDate();
+              nextSchedule.landfill = new ISODateDuration(schedule.landfill_sch).getNextDate();
+              nextSchedule.recycle = new ISODateDuration(schedule.recycle_sch).getNextDate();
+              nextSchedule.nearestFacility = nearestCollectionFacility;
             } catch (err) {
-              console.log("ERROR: "+err);
-                //throw new Error(err);
+              console.log("ERROR: " + err);
+              //throw new Error(err);
             }
             console.log(nextSchedule);
             res.send(nextSchedule);
           });
         }
       });
-    }
+    });
+  }
+
 
 });
 

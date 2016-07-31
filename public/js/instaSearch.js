@@ -44,8 +44,15 @@ console.log("rerender");
         <div id='searchContainer' className="col-xs-12">
           <SearchForm onSubmitGetInfo={this.getScheduleInfo} />
         </div>
-          <div id="scheduleView" className="col-xs-12">
-              <ScheduleView data={this.state.scheduleInfo}/>
+        <div class="row">
+          <div className="col-xs-12">
+            <div id="scheduleView" className="col-xs-6">
+                <ScheduleView data={this.state.scheduleInfo}/>
+            </div>
+            <div id="wasteFacility" className="col-xs-6">
+                <NearbyWasteFacility data={this.state.scheduleInfo}/>
+            </div>
+          </div>
           </div>
       </div>
     );

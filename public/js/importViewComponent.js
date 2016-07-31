@@ -55,7 +55,7 @@ var ImportView = React.createClass({
           <td>{d.uniqueName}</td>
           <td>{d.councilName}</td>
           <td>{d.boundaries.length}</td>
-          <td className='date'>{setDateFormat(d.lastImportedAt)}</td>
+  
           <td><a onClick={this.handleImportClick} href="#" id={d.uniqueName}>Import Now</a></td></tr>
         );
  		}, this);
@@ -69,7 +69,6 @@ var ImportView = React.createClass({
             <th>Unique Name</th>
             <th>Council</th>
             <th>LGA boundaries</th>
-            <th>Last imported</th>
             <th>Actions</th>
             </tr>
             </thead>

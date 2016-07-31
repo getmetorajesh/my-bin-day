@@ -12,9 +12,9 @@ var MapView = React.createClass({
       });
       map.on('click', this.onMapClick);
        if (map.scrollWheelZoom.enabled()) {
-        map.scrollWheelZoom.disable();
+      //  map.scrollWheelZoom.disable();
       }
-      map.setView([-37,144],5);
+      map.setView([-37,144],8);
 
       $.get( "boundaries", {}, function( data ) {
         var overlays = L.geoJson(data, {

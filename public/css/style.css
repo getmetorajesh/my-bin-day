@@ -26,3 +26,7 @@ nav .container h1 {
 #scheduleView {
   background: #fff;
   margin: 0px auto; }
+  
+#footer {
+  margin:0px auto;
+  text-align: center;}
